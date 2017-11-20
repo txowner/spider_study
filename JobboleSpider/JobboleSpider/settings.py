@@ -35,10 +35,15 @@ ROBOTSTXT_OBEY = False
 # Configure a delay for requests for the same website (default: 0)
 # See http://scrapy.readthedocs.org/en/latest/topics/settings.html#download-delay
 # See also autothrottle settings and docs
-#DOWNLOAD_DELAY = 3
+# import random
+# n = random.randint(2,5)
+DOWNLOAD_DELAY = 3
+
 # The download delay setting will honor only one of:
-#CONCURRENT_REQUESTS_PER_DOMAIN = 16
-#CONCURRENT_REQUESTS_PER_IP = 16
+# CONCURRENT_REQUESTS_PER_DOMAIN = 16
+# CONCURRENT_REQUESTS_PER_DOMAIN = 3
+# CONCURRENT_REQUESTS_PER_IP = 16
+# CONCURRENT_REQUESTS_PER_IP = 2
 
 # Disable cookies (enabled by default)
 #COOKIES_ENABLED = False
@@ -47,10 +52,11 @@ ROBOTSTXT_OBEY = False
 #TELNETCONSOLE_ENABLED = False
 
 # Override the default request headers:
-#DEFAULT_REQUEST_HEADERS = {
-#   'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-#   'Accept-Language': 'en',
-#}
+# DEFAULT_REQUEST_HEADERS = {
+#     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+#     'Accept-Language': 'en',
+#     'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36',
+# }
 
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
@@ -60,9 +66,12 @@ ROBOTSTXT_OBEY = False
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'JobboleSpider.middlewares.MyCustomDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+    # 数字越小的中间件越靠近引擎，数字越大的中间件越靠近下载器
+    # 'JobboleSpider.middlewares.MyCustomDownloaderMiddleware': 543,
+    # 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None,  #这是scrapy默认的useragentmiddleware 序号为None，表示禁止该中间件
+    # 'JobboleSpider.middlewares.RandomUserAgentMiddleware':200,
+}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
@@ -76,15 +85,15 @@ ITEM_PIPELINES = {
    #  'JobboleSpider.pipelines.JobbolespiderPipeline': 300,
    #  'JobboleSpider.pipelines.ArticleSaveToMongoDBPipeline': 400,   # 存储到Mongodb
    #  'JobboleSpider.pipelines.MysqlPipeline': 400,   # 以同步的方式存储到mysql
-    'JobboleSpider.pipelines.MysqlTwistedPipeline': 400,   # 以异步的方式存储到mysql
+    'JobboleSpider.pipelines.MysqlTwistedPipeline': 600,   # 以异步的方式存储到mysql
    #  'scrapy.contrib.pipeline.images.ImagesPipeline': 500   # scrapy自带的下载图片的pipeline
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
-#AUTOTHROTTLE_ENABLED = True
+# AUTOTHROTTLE_ENABLED = True
 # The initial download delay
-#AUTOTHROTTLE_START_DELAY = 5
+# AUTOTHROTTLE_START_DELAY = 5
 # The maximum download delay to be set in case of high latencies
 #AUTOTHROTTLE_MAX_DELAY = 60
 # The average number of requests Scrapy should be sending in parallel to
@@ -124,3 +133,17 @@ IMAGES_STORE = os.path.join(BASE_DIR, 'images')
 SQL_DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
 SQL_DATE_FORMAT = '%Y-%m-%d'
 
+
+# 设置USER_AGENT
+# USER_AGENT = 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.78 Safari/537.36'
+# USER_AGENT_LIST = [
+#     "Mozilla/5.0 (Windows NT 6.3; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2225.0 Safari/537.36",
+#     "Opera/12.0(Windows NT 5.1;U;en)Presto/22.9.168 Version/12.00",
+#     "Mozilla/5.0 (X11; Linux i586; rv:31.0) Gecko/20100101 Firefox/31.0",
+# ]
+
+# 配置现成user-agent 代理库生成的类型
+UA_TYPE = 'random'
+
+# 一个提示，看看开启有什么效果
+DUPEFILTER_DEBUG = True

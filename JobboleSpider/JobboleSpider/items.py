@@ -197,3 +197,29 @@ class ZhihuAnswersItem(scrapy.Item):
         return insert_sql, params
 
 
+class LagoujobItemLoader(ItemLoader):
+    pass
+
+
+class LagoujobItem(scrapy.Item):
+    """
+    手机拉勾网职位item
+    """
+    url = scrapy.Field()
+    url_object_id = scrapy.Field()
+    title = scrapy.Field()
+    salary_min = scrapy.Field()
+    salary_max = scrapy.Field()
+    work_years_min = scrapy.Field()
+    work_years_max = scrapy.Field()
+    job_city = scrapy.Field()
+    job_type = scrapy.Field()
+    degree_need = scrapy.Field()
+    publish_time = scrapy.Field()
+    tags = scrapy.Field()
+    job_advantage = scrapy.Field()
+    job_descript = scrapy.Field()
+    job_address = scrapy.Field()
+    company_name = scrapy.Field()
+    company_url = scrapy.Field()
+    crawl_time = scrapy.Field()

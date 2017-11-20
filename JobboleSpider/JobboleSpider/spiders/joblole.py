@@ -2,8 +2,8 @@
 from urllib.parse import urljoin
 import scrapy
 
-from JobboleSpider.items import JobboleArticleItem, JobboleArticleItemLoader
-from JobboleSpider.utils.common import get_md5
+from items import JobboleArticleItem, JobboleArticleItemLoader
+from utils.common import get_md5
 
 
 class JobloleSpider(scrapy.Spider):

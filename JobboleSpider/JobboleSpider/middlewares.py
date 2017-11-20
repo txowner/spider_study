@@ -6,6 +6,8 @@
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+import random
+from fake_useragent import UserAgent
 
 
 class JobbolespiderSpiderMiddleware(object):
@@ -54,3 +56,52 @@ class JobbolespiderSpiderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class RandomUserAgentMiddleware(object):
+    """
+    根据现成的库 随机生成 uaer-agent， 一般这种更好
+    """
+    def __init__(self, crawler):
+        self.crawler = crawler
+        self.ua = UserAgent()
+        self.ua_type = crawler.settings.get('UA_TYPE', 'random')
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler)
+
+    def process_request(self, request, spider):
+        def get_ua():
+            return getattr(self.ua, self.ua_type)
+
+        # 设置user-agent
+        request.headers.setdefault('User-Agent', get_ua())
+        # request.dont_filter = True
+        # print('------->',spider)
+        # print('------->',request)
+        # if spider.name == 'lagou':
+        #     print('****************')
+        # 设置ip 代理
+        # request.meta['proxy'] = 'http://221.238.67.231:8081'   # 这样就设置了代理
+
+
+class RandomUserAgentMiddleware_old(object):
+    """
+    根据自定义的列表 随机生成 uaer-agent
+    """
+    def __init__(self, crawler):
+        self.crawler = crawler
+        # super(RandomUserAgentMiddleware, self).__init__()
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler)
+
+    def random_useragent(self):
+        user_agent_list = self.crawler.settings.get('USER_AGENT_LIST', [])
+        n = random.randint(0, len(user_agent_list)-1)
+        return user_agent_list[n]
+
+    def process_request(self, request, spider):
+        request.headers.setdefault('User-Agent', self.random_useragent())
